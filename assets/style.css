@@ -359,3 +359,14 @@ h3{font-size:clamp(18px,2.2vw,22px)}
 .nav{gap:26px;white-space:nowrap}
 @media(max-width:1279px){.header-phone{display:none}}
 @media(min-width:1040px) and (max-width:1199px){.nav{gap:18px;font-size:14px}.logo-txt small{display:none}}
+/* hero art (no photo) */
+.hero-art{background:radial-gradient(60% 55% at 50% 45%,rgba(201,154,91,.22),transparent 70%),radial-gradient(120% 90% at 100% 0%,rgba(201,154,91,.10),transparent 60%),linear-gradient(160deg,#221d19,#151210);display:flex;align-items:center;justify-content:center}
+.hero-art:after{background:linear-gradient(180deg,transparent 60%,rgba(20,18,16,.7))}
+.ha-rings{position:absolute;inset:0;display:grid;place-items:center}
+.ha-rings i{position:absolute;border-radius:50%;border:1px solid rgba(201,154,91,.16)}
+.ha-rings i:nth-child(1){width:46%;aspect-ratio:1}.ha-rings i:nth-child(2){width:72%;aspect-ratio:1;border-style:dashed;opacity:.7;animation:spin 60s linear infinite}.ha-rings i:nth-child(3){width:98%;aspect-ratio:1;opacity:.5}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ha-mark{position:absolute;width:62%;opacity:.07;top:12%;left:50%;transform:translateX(-50%)}
+.ha-bike{position:relative;z-index:1;width:78%;color:var(--gold);filter:drop-shadow(0 0 24px rgba(201,154,91,.35))}
+.ha-bike svg{width:100%;height:auto}
+.ha-bike svg circle,.ha-bike svg path,.ha-bike svg rect{stroke-width:2.4}

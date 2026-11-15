@@ -4,7 +4,7 @@
 первое фото становится обложкой карточки. Затем запустите: python3 build.py"""
 import os, json, glob, html
 ROOT=os.path.dirname(os.path.abspath(__file__))
-PHONE='+7-913-943-88-14'; TEL='tel:+79139438814'; WA='https://wa.me/79139438814'; TG='https://t.me/volte0ne'
+PHONE='+7-913-943-88-14'; TEL='tel:+79139438814'; WA='https://wa.me/79139438814'; TG='https://t.me/Volt0ne'
 ADDR='г. Новосибирск, ул. Пролетарская, 50'
 SITE_URL='https://alexautoperfomance-ctrl.github.io/volt-one-site/'
 POINTS=[{"name":"Пролетарская, 50","addr":ADDR,"lat":55.0248099,"lon":82.9562136,
@@ -93,7 +93,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=6">
+<link rel="stylesheet" href="{p}assets/style.css?v=7">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
@@ -105,7 +105,7 @@ def header(p,active,solid=False):
     return f'''<header class="header{' solid' if solid else ''}"><div class="container header-in">
 <a class="logo" href="{home}" aria-label="VOLT ONE — на главную"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a>
 <nav class="nav">{nav}</nav>
-<div class="header-cta"><a class="header-phone" href="{TEL}">{PHONE}</a><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram @volte0ne">{ic('tg')}</a></div>
+<div class="header-cta"><a class="header-phone" href="{TEL}">{PHONE}</a><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram @Volt0ne">{ic('tg')}</a></div>
 <button class="burger" aria-label="Меню" aria-expanded="false"><span></span></button></div></header>
 <div class="mobile-menu">{mm}<div class="mm-contacts"><a class="btn btn-gold btn-block" href="{TEL}">{ic('phone')}{PHONE}</a><a class="btn btn-ghost btn-block" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost btn-block" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a><p class="addr">{ADDR}</p></div></div>'''
 
@@ -116,7 +116,7 @@ def footer(p):
 <div class="foot-about"><a class="logo" href="{home}"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a><p>Новые электровелосипеды WENBOX для курьеров. Аренда, аренда с выкупом, без залога. Собственный сервис.</p></div>
 <div><h4>Модели</h4><ul>{ml}</ul></div>
 <div><h4>Разделы</h4><ul><li><a href="{p}catalog/">Каталог</a></li><li><a href="{home}#adv">Преимущества</a></li><li><a href="{home}#service">Сервис</a></li><li><a href="{home}#steps">Как начать</a></li><li><a href="{home}#contacts">Контакты</a></li></ul></div>
-<div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @volte0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
+<div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @Volt0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
 <div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}WhatsApp</a></div>
 <script src="{p}assets/main.js?v=6" defer></script></body></html>'''
@@ -191,8 +191,8 @@ def index():
 <p class="lead rv d2">WENBOX в аренду и с выкупом. Все электровелосипеды новые, полностью подготовлены к работе и подходят для ежедневной работы курьером.</p>
 <div class="hero-btns rv d3"><a class="btn btn-gold" href="catalog/">Выбрать модель{ic('arrow')}</a><a class="btn btn-ghost" href="{TEL}">{ic('phone')}{PHONE}</a></div>
 <div class="hero-stats rv d3"><div><b>от 4 000 ₽</b><span>аренда в неделю</span></div><div><b>0 ₽</b><span>залог</span></div><div><b>до 70 км/ч</b><span>скорость U2 / U2 PRO</span></div></div></div>
-<div class="hero-media rv d2"><div class="hero-photo"><picture><source srcset="img/hero.webp" type="image/webp"><img src="img/hero.jpg" alt="Электровелосипеды WENBOX U2 с брендингом VOLT ONE" fetchpriority="high"></picture>
-<div class="cap"><div><b>WENBOX U2 / U2 PRO</b>Реальное фото нашего парка</div></div></div>
+<div class="hero-media rv d2"><div class="hero-photo hero-art"><div class="ha-rings"><i></i><i></i><i></i></div><img class="ha-mark" src="img/brand/mark.svg" alt="" aria-hidden="true"><div class="ha-bike">{BIKE_SVG}</div>
+<div class="cap"><div><b>WENBOX U2 · U2 BIG · U5 · R9</b>Новые электровелосипеды для курьеров</div></div></div>
 <div class="float-chip chip-1">{ic('shield')}<div><b>Без залога</b><span>новая техника</span></div></div>
 <div class="float-chip chip-2">{ic('wrench')}<div><b>Свой сервис</b><span>подменный — бесплатно</span></div></div></div>
 </div></section>
