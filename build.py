@@ -114,7 +114,7 @@ def footer(p):
 <div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a href="{WA}" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="{TG}" target="_blank" rel="noopener">Telegram</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
 <div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('chat')}Написать</a></div>
-<script src="{p}assets/main.js?v=4" defer></script></body></html>'''
+<script src="{p}assets/main.js?v=5" defer></script></body></html>'''
 
 def media(m,p,cls=''):
     ph=photos(m['slug'])

@@ -51,7 +51,7 @@
     function init(){if(started)return;started=true;
       var l=d.createElement('link');l.rel='stylesheet';l.href='https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';d.head.appendChild(l);
       var s=d.createElement('script');s.src='https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';s.onload=function(){
-      var p=pts[cur];map=L.map('map',{center:[p.lat,p.lon],zoom:16,scrollWheelZoom:false,attributionControl:true});
+      var p=pts[cur];map=L.map('map',{center:[p.lat,p.lon],zoom:16,scrollWheelZoom:false,attributionControl:true});map.attributionControl.setPrefix(false);
       L.tileLayer('https://tile{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1',{subdomains:'0123',maxZoom:18,attribution:'&copy; <a href="https://2gis.ru" target="_blank" rel="noopener">2ГИС</a>'}).addTo(map);
       var icon=L.divIcon({className:'vpin',html:'<span></span>',iconSize:[44,54],iconAnchor:[22,52],popupAnchor:[0,-48]});
       pts.forEach(function(q,k){markers[k]=L.marker([q.lat,q.lon],{icon:icon}).addTo(map).bindPopup('<b>VOLT ONE</b><br>'+q.addr)});
