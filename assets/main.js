@@ -58,4 +58,22 @@
       markers[cur].openPopup();var ph=d.querySelector('.map-ph');if(ph)ph.remove();};d.head.appendChild(s)}
     if('IntersectionObserver' in window){var mo=new IntersectionObserver(function(es){if(es[0].isIntersecting){init();mo.disconnect()}},{rootMargin:'600px'});mo.observe(mapEl)}else init();
   }
+
+  // parts filter + lightbox
+  var pg=d.getElementById('pgrid');
+  if(pg){
+    var tiles=[].slice.call(pg.querySelectorAll('.ptile')),btns=d.querySelectorAll('.pcat');
+    btns.forEach(function(b){b.addEventListener('click',function(){var c=b.dataset.cat;btns.forEach(function(x){x.classList.toggle('on',x===b)});
+      tiles.forEach(function(t){var on=c==='all'||(' '+t.dataset.cats+' ').indexOf(' '+c+' ')>-1;t.hidden=!on;if(on){t.style.animation='none';t.offsetWidth;t.style.animation=''}});
+      var pc=b.parentNode;if(pc.scrollWidth>pc.clientWidth){pc.scrollTo({left:b.offsetLeft-(pc.clientWidth-b.offsetWidth)/2,behavior:'smooth'})}})});
+    var plb=d.getElementById('plb'),pli=plb.querySelector('img'),cur=0;
+    function vis(){return tiles.filter(function(t){return !t.hidden})}
+    function pshow(n){var v=vis();cur=(n+v.length)%v.length;var b=v[cur].querySelector('.ptile-img');pli.src=b.dataset.full;pli.alt=v[cur].querySelector('h3').textContent}
+    tiles.forEach(function(t){t.querySelector('.ptile-img').addEventListener('click',function(){pshow(vis().indexOf(t));plb.classList.add('open')})});
+    plb.querySelectorAll('[data-plb]').forEach(function(x){x.addEventListener('click',function(e){e.stopPropagation();pshow(cur+(+x.dataset.plb))})});
+    plb.addEventListener('click',function(e){if(e.target===plb||e.target.closest('.lb-close'))plb.classList.remove('open')});
+    d.addEventListener('keydown',function(e){if(!plb.classList.contains('open'))return;if(e.key==='Escape')plb.classList.remove('open');if(e.key==='ArrowRight')pshow(cur+1);if(e.key==='ArrowLeft')pshow(cur-1)});
+    var px=null;plb.addEventListener('touchstart',function(e){px=e.touches[0].clientX},{passive:true});
+    plb.addEventListener('touchend',function(e){if(px===null)return;var dx=e.changedTouches[0].clientX-px;if(Math.abs(dx)>40)pshow(cur+(dx<0?1:-1));px=null});
+  }
 })();
