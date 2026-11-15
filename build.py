@@ -93,7 +93,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=5">
+<link rel="stylesheet" href="{p}assets/style.css?v=6">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
