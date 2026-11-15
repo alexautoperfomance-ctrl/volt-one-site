@@ -250,19 +250,19 @@ def parts_cards(full=True):
     out=''
     for i,(icn,t,d) in enumerate(PARTS):
         btns=(f'<div class="part-btns"><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic("wa")}Написать</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram">{ic("tg")}</a></div>' if full else '')
-        out+=f'<div class="part rv d{i%4}"><div class="ic">{ic(icn)}</div><h3>{t}</h3><p>{d}</p>'+(f'<div class="part-meta"><span>{ic("check")}Цена по запросу</span><span>{ic("check")}Подберём под вашу модель ({MODELS_SHORT})</span></div>{btns}' if full else '')+'</div>'
+        out+=f'<div class="part rv d{i%4}"><div class="ic">{ic(icn)}</div><h3>{t}</h3><p>{d}</p>'+(f'<div class="part-meta"><span>{ic("check")}Цена по запросу</span><span>{ic("check")}Подберём под ваш электровелосипед</span></div>{btns}' if full else '')+'</div>'
     return out
 
 def parts_teaser(p):
-    return f'''<section class="section" id="parts" style="padding-top:0"><div class="container"><div class="section-head row rv"><div style="display:flex;flex-direction:column;gap:16px"><span class="eyebrow">Запчасти и тюнинг</span><h2>Запчасти <span class="gold">и тюнинг</span></h2><p class="lead">Подберём под вашу модель ({MODELS_SHORT}). Цена по запросу.</p></div><a class="btn btn-ghost" href="{p}parts/">Все категории{ic('arrow')}</a></div>
+    return f'''<section class="section" id="parts" style="padding-top:0"><div class="container"><div class="section-head row rv"><div style="display:flex;flex-direction:column;gap:16px"><span class="eyebrow">Запчасти и тюнинг</span><h2>Запчасти <span class="gold">и тюнинг</span></h2><p class="lead">Подберём под ваш электровелосипед — любую модель. Цена по запросу.</p></div><a class="btn btn-ghost" href="{p}parts/">Все категории{ic('arrow')}</a></div>
 <div class="parts-grid compact">{parts_cards(False)}</div></div></section>'''
 
 def parts_page():
     p='../'
-    s=head('Запчасти и тюнинг для электровелосипедов WENBOX — VOLT ONE','Запчасти и тюнинг для WENBOX U2, U2 BIG, U5, R9: АКБ и зарядки, колёса, тормоза, свет, сиденья и багажники, защита, тюнинг, ремонт и установка. Цена по запросу. Новосибирск.',p,'parts/')
+    s=head('Запчасти и тюнинг для электровелосипедов — VOLT ONE','Запчасти и тюнинг для электровелосипедов любых моделей: АКБ и зарядки, колёса, тормоза, свет, сиденья и багажники, защита, тюнинг, ремонт и установка. Цена по запросу. Новосибирск.',p,'parts/')
     s+=header(p,'parts',True)
     s+=f'''<main><section class="phero"><div class="container"><div class="crumbs"><a href="../">Главная</a><i>/</i><span>Запчасти и тюнинг</span></div>
-<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти и тюнинг под вашу модель ({MODELS_SHORT}). Цена по запросу — напишите, какая модель и что нужно.</p>
+<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти и тюнинг под ваш электровелосипед — любую модель. Цена по запросу — напишите, какая модель и что нужно.</p>
 <div class="hero-btns" style="margin-top:8px"><a class="btn btn-gold" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div></div></div></section>
 <section class="section" style="padding-top:30px"><div class="container"><div class="parts-grid">{parts_cards(True)}</div></div></section>
 {cta_block(p)}</main>'''
