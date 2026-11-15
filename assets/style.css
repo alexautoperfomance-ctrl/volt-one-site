@@ -373,3 +373,27 @@ h3{font-size:clamp(18px,2.2vw,22px)}
 @media(max-width:1039px){.hero-art{aspect-ratio:1/1}.ha-bike{width:70%;margin-top:-14%}}
 @media(min-width:640px) and (max-width:1039px){.hero-art{aspect-ratio:16/10}.ha-bike{width:50%;margin-top:-6%}}
 .ha-mark{top:50%;transform:translate(-50%,-62%);width:70%;opacity:.05}
+/* parts */
+.parts-grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:640px){.parts-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.parts-grid{grid-template-columns:repeat(4,1fr)}}
+.part{display:flex;flex-direction:column;padding:24px 22px;border-radius:var(--r);border:1px solid var(--line2);background:linear-gradient(180deg,var(--card),rgba(33,29,26,.6));transition:border-color .3s,transform .3s}
+.part:hover{border-color:var(--line);transform:translateY(-3px)}
+.part .ic{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;background:rgba(201,154,91,.1);border:1px solid var(--line);color:var(--gold2);margin-bottom:18px}
+.part .ic svg{width:26px;height:26px}
+.part h3{font-size:17px;font-weight:500;line-height:1.3;margin-bottom:6px}
+.part p{color:var(--muted);font-size:14.5px;line-height:1.5}
+.part-meta{display:grid;gap:8px;margin:18px 0 20px;padding-top:16px;border-top:1px solid var(--line2);font-size:13.5px}
+.part-meta span{display:flex;gap:8px;align-items:flex-start;line-height:1.4}
+.part-meta svg{width:16px;height:16px;color:var(--gold);margin-top:2px}
+.part-btns{margin-top:auto;display:flex;gap:10px;align-items:center}
+.part-btns .btn{flex:1}
+.parts-grid.compact .part{padding:20px}
+@media(max-width:639px){.parts-grid.compact{grid-template-columns:1fr 1fr;gap:10px}.parts-grid.compact .part{padding:16px}.parts-grid.compact .part p{display:none}.parts-grid.compact .part h3{font-size:14.5px;margin:0}.parts-grid.compact .part .ic{width:42px;height:42px;margin-bottom:12px}}
+@media(min-width:1040px) and (max-width:1279px){.nav{gap:16px;font-size:13.5px}}
+@media(max-width:1439px){.header-phone{display:none}}
+@media(min-width:1040px){.nav{gap:24px}}
+@media(min-width:1040px) and (max-width:1199px){.nav{gap:15px}}
+@media(max-width:1599px){.header-phone{display:none}}
+@media(max-width:1279px){.hide-lg{display:none}}
+.header-phone{display:none!important}

@@ -44,6 +44,10 @@ I={ # inline svg icons (stroke)
 'clock':'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
 'courier':'<circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-8h5l3 8M10 9 8 5H6M15 9h3"/>',
 'grid':'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+'disc':'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2"/><path d="M12 5v2M12 17v2M5 12h2M17 12h2M7 7l1.4 1.4M15.6 15.6 17 17M17 7l-1.4 1.4M8.4 15.6 7 17"/>',
+'light':'<path d="M10 6a6 6 0 0 0 0 12h3V6h-3z"/><path d="M16 8h5M16 12h6M16 16h5"/>',
+'tune':'<path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/>',
+'guard':'<path d="M4 16a8 8 0 0 1 16 0"/><path d="M2 16h4M18 16h4M8 16a4 4 0 0 1 8 0"/>',
 'new':'<path d="M12 2l2.4 4.8 5.3.8-3.8 3.7.9 5.3L12 14.1 7.2 16.6l.9-5.3L4.3 7.6l5.3-.8z"/>',
 }
 WA_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2A9.8 9.8 0 0 0 3.6 17l-1.4 4.8 5-1.3A9.8 9.8 0 1 0 12 2.2zm0 17.9a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.1 8.1 0 1 1 12 20.1zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>'
@@ -93,19 +97,19 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=8">
+<link rel="stylesheet" href="{p}assets/style.css?v=10">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
 def header(p,active,solid=False):
     home=p or './'
-    links=[('Модели',f'{p}catalog/','catalog'),('Преимущества',f'{home}#adv','adv'),('Комплектация',f'{home}#kit','kit'),('Сервис',f'{home}#service','service'),('Контакты',f'{home}#contacts','contacts')]
+    links=[('Модели',f'{p}catalog/','catalog'),('Запчасти',f'{p}parts/','parts'),('Преимущества',f'{home}#adv','adv'),('Комплектация',f'{home}#kit','kit'),('Сервис',f'{home}#service','service'),('Контакты',f'{home}#contacts','contacts')]
     nav=''.join(f'<a href="{u}"{" class=active" if k==active else ""}>{t}</a>' for t,u,k in links)
     mm=''.join(f'<a class="mm-link" href="{u}">{t}{ic("arrow")}</a>' for t,u,k in links)
     return f'''<header class="header{' solid' if solid else ''}"><div class="container header-in">
 <a class="logo" href="{home}" aria-label="VOLT ONE — на главную"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a>
 <nav class="nav">{nav}</nav>
-<div class="header-cta"><a class="header-phone" href="{TEL}">{PHONE}</a><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram @Volt0ne">{ic('tg')}</a></div>
+<div class="header-cta"><a class="header-phone" href="{TEL}">{PHONE}</a><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic('wa')}<span class="hide-lg">Написать в&nbsp;</span>WhatsApp</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram @Volt0ne">{ic('tg')}</a></div>
 <button class="burger" aria-label="Меню" aria-expanded="false"><span></span></button></div></header>
 <div class="mobile-menu">{mm}<div class="mm-contacts"><a class="btn btn-gold btn-block" href="{TEL}">{ic('phone')}{PHONE}</a><a class="btn btn-ghost btn-block" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost btn-block" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a><p class="addr">{ADDR}</p></div></div>'''
 
@@ -115,7 +119,7 @@ def footer(p):
     return f'''<footer class="footer"><div class="container"><div class="foot-grid">
 <div class="foot-about"><a class="logo" href="{home}"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a><p>Новые электровелосипеды WENBOX для курьеров. Аренда, аренда с выкупом, без залога. Собственный сервис.</p></div>
 <div><h4>Модели</h4><ul>{ml}</ul></div>
-<div><h4>Разделы</h4><ul><li><a href="{p}catalog/">Каталог</a></li><li><a href="{home}#adv">Преимущества</a></li><li><a href="{home}#service">Сервис</a></li><li><a href="{home}#steps">Как начать</a></li><li><a href="{home}#contacts">Контакты</a></li></ul></div>
+<div><h4>Разделы</h4><ul><li><a href="{p}catalog/">Каталог</a></li><li><a href="{p}parts/">Запчасти и тюнинг</a></li><li><a href="{home}#adv">Преимущества</a></li><li><a href="{home}#service">Сервис</a></li><li><a href="{home}#steps">Как начать</a></li><li><a href="{home}#contacts">Контакты</a></li></ul></div>
 <div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @Volt0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
 <div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}WhatsApp</a></div>
@@ -219,6 +223,7 @@ def index():
 <div class="srv rv d2"><div class="ic">{ic('truck')}</div><div><h3>Доставка в отдалённые районы</h3><p>Доставляем электровелосипеды в отдалённые районы города и области.</p></div></div></div>
 </div></section>
 
+{parts_teaser(p)}
 <section class="section" id="steps"><div class="container"><div class="section-head rv"><span class="eyebrow">Как начать</span><h2>Четыре шага <span class="gold">до первого заказа</span></h2></div>
 <div class="steps"><div class="step rv"><span class="n">01</span><h3>Позвоните или напишите</h3><p>{PHONE} — звонок, WhatsApp или Telegram.</p></div>
 <div class="step rv d1"><span class="n">02</span><h3>Подберём модель</h3><p>Подберём электровелосипед под ваши задачи: аренда или аренда с выкупом.</p></div>
@@ -227,6 +232,40 @@ def index():
 {cta_block(p)}
 {contacts_block()}
 </main>'''
+    s+=footer(p)
+    return s
+
+
+PARTS=[('battery','АКБ и зарядные устройства','Аккумуляторы LiFePO4 и зарядки под вашу модель.'),
+('wheel','Колёса и покрышки','Покрышки, камеры, колёса в сборе.'),
+('disc','Тормоза','Колодки, диски, тормозные механизмы.'),
+('light','Свет и оптика','Фары, поворотники, стоп-сигналы.'),
+('seat','Сиденья и багажники','Сиденья, двойные сидушки, багажники, кофры.'),
+('guard','Защита','Защитные дуги и крылья.'),
+('tune','Тюнинг','Подсветка, рули, зеркала, амортизаторы.'),
+('wrench','Ремонт и установка','Установим запчасти и тюнинг в собственном сервисе.')]
+MODELS_SHORT='U2, U2 BIG, U5, R9'
+
+def parts_cards(full=True):
+    out=''
+    for i,(icn,t,d) in enumerate(PARTS):
+        btns=(f'<div class="part-btns"><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic("wa")}Написать</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram">{ic("tg")}</a></div>' if full else '')
+        out+=f'<div class="part rv d{i%4}"><div class="ic">{ic(icn)}</div><h3>{t}</h3><p>{d}</p>'+(f'<div class="part-meta"><span>{ic("check")}Цена по запросу</span><span>{ic("check")}Подберём под вашу модель ({MODELS_SHORT})</span></div>{btns}' if full else '')+'</div>'
+    return out
+
+def parts_teaser(p):
+    return f'''<section class="section" id="parts" style="padding-top:0"><div class="container"><div class="section-head row rv"><div style="display:flex;flex-direction:column;gap:16px"><span class="eyebrow">Запчасти и тюнинг</span><h2>Запчасти <span class="gold">и тюнинг</span></h2><p class="lead">Подберём под вашу модель ({MODELS_SHORT}). Цена по запросу.</p></div><a class="btn btn-ghost" href="{p}parts/">Все категории{ic('arrow')}</a></div>
+<div class="parts-grid compact">{parts_cards(False)}</div></div></section>'''
+
+def parts_page():
+    p='../'
+    s=head('Запчасти и тюнинг для электровелосипедов WENBOX — VOLT ONE','Запчасти и тюнинг для WENBOX U2, U2 BIG, U5, R9: АКБ и зарядки, колёса, тормоза, свет, сиденья и багажники, защита, тюнинг, ремонт и установка. Цена по запросу. Новосибирск.',p,'parts/')
+    s+=header(p,'parts',True)
+    s+=f'''<main><section class="phero"><div class="container"><div class="crumbs"><a href="../">Главная</a><i>/</i><span>Запчасти и тюнинг</span></div>
+<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти и тюнинг под вашу модель ({MODELS_SHORT}). Цена по запросу — напишите, какая модель и что нужно.</p>
+<div class="hero-btns" style="margin-top:8px"><a class="btn btn-gold" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div></div></div></section>
+<section class="section" style="padding-top:30px"><div class="container"><div class="parts-grid">{parts_cards(True)}</div></div></section>
+{cta_block(p)}</main>'''
     s+=footer(p)
     return s
 
@@ -278,7 +317,7 @@ def model_page(m):
 
 def w(path,txt):
     path=os.path.join(ROOT,path); os.makedirs(os.path.dirname(path),exist_ok=True); open(path,'w').write(txt)
-w('index.html',index()); w('catalog/index.html',catalog())
+w('index.html',index()); w('catalog/index.html',catalog()); w('parts/index.html',parts_page())
 for m in MODELS: w(f'catalog/{m["slug"]}/index.html',model_page(m))
 w('404.html',head('Страница не найдена — VOLT ONE','',SITE_URL,'')+f'<main><section class="phero"><div class="container"><h1>Страница <span class="gold">не найдена</span></h1><p class="lead" style="margin:20px 0 30px">Перейдите на главную или в каталог.</p><a class="btn btn-gold" href="{SITE_URL}">На главную</a></div></section></main></body></html>')
 print('built', {m['slug']:len(photos(m['slug'])) for m in MODELS})
