@@ -4,7 +4,7 @@
 первое фото становится обложкой карточки. Затем запустите: python3 build.py"""
 import os, json, glob, html
 ROOT=os.path.dirname(os.path.abspath(__file__))
-PHONE='+7-913-943-88-14'; TEL='tel:+79139438814'; WA='https://wa.me/79139438814'; TG='https://t.me/+79139438814'
+PHONE='+7-913-943-88-14'; TEL='tel:+79139438814'; WA='https://wa.me/79139438814'; TG='https://t.me/volte0ne'
 ADDR='г. Новосибирск, ул. Пролетарская, 50'
 SITE_URL='https://alexautoperfomance-ctrl.github.io/volt-one-site/'
 POINTS=[{"name":"Пролетарская, 50","addr":ADDR,"lat":55.0248099,"lon":82.9562136,
@@ -46,7 +46,12 @@ I={ # inline svg icons (stroke)
 'grid':'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
 'new':'<path d="M12 2l2.4 4.8 5.3.8-3.8 3.7.9 5.3L12 14.1 7.2 16.6l.9-5.3L4.3 7.6l5.3-.8z"/>',
 }
-def ic(n,cls=''): return f'<svg class="{cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{I[n]}</svg>'
+WA_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2A9.8 9.8 0 0 0 3.6 17l-1.4 4.8 5-1.3A9.8 9.8 0 1 0 12 2.2zm0 17.9a8.1 8.1 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8.1 8.1 0 1 1 12 20.1zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1.1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>'
+TG_SVG='<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.4 3.6 2.9 10.7c-1.3.5-1.2 1.2-.2 1.5l4.7 1.5 1.8 5.6c.2.6.4.8.8.8s.6-.2.9-.5l2.3-2.2 4.8 3.5c.9.5 1.5.2 1.7-.8l3.1-14.7c.3-1.3-.5-1.9-1.4-1.3zM9.6 13.9l8.6-5.4c.4-.3.8-.1.5.2l-7.4 6.7-.3 3.1-1.4-4.6z"/></svg>'
+def ic(n,cls=''):
+    if n=='wa': return WA_SVG
+    if n=='tg': return TG_SVG
+    return f'<svg class="{cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">{I[n]}</svg>'
 
 BIKE_SVG='''<svg viewBox="0 0 320 190" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="70" cy="138" r="40"/><circle cx="70" cy="138" r="14"/><circle cx="252" cy="138" r="40"/><circle cx="252" cy="138" r="14"/><path d="M70 138 112 70h78l20 32"/><path d="M118 70h-22l-10-16M190 70l62 68M210 102h-60l-38 36"/><path d="M228 46l-18 56M218 44h24"/><path d="M128 62h46" stroke-width="10" opacity=".55"/><rect x="138" y="94" width="64" height="20" rx="6" opacity=".55"/></svg>'''
 
@@ -88,7 +93,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=4">
+<link rel="stylesheet" href="{p}assets/style.css?v=5">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
@@ -100,9 +105,9 @@ def header(p,active,solid=False):
     return f'''<header class="header{' solid' if solid else ''}"><div class="container header-in">
 <a class="logo" href="{home}" aria-label="VOLT ONE — на главную"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a>
 <nav class="nav">{nav}</nav>
-<div class="header-cta"><a class="header-phone" href="{TEL}">{PHONE}</a><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic('chat')}Написать</a></div>
+<div class="header-cta"><a class="header-phone" href="{TEL}">{PHONE}</a><a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="icon-btn" href="{TG}" target="_blank" rel="noopener" aria-label="Написать в Telegram" title="Telegram @volte0ne">{ic('tg')}</a></div>
 <button class="burger" aria-label="Меню" aria-expanded="false"><span></span></button></div></header>
-<div class="mobile-menu">{mm}<div class="mm-contacts"><a class="btn btn-gold btn-block" href="{TEL}">{ic('phone')}{PHONE}</a><a class="btn btn-ghost btn-block" href="{WA}" target="_blank" rel="noopener">{ic('chat')}WhatsApp</a><a class="btn btn-ghost btn-block" href="{TG}" target="_blank" rel="noopener">{ic('send')}Telegram</a><p class="addr">{ADDR}</p></div></div>'''
+<div class="mobile-menu">{mm}<div class="mm-contacts"><a class="btn btn-gold btn-block" href="{TEL}">{ic('phone')}{PHONE}</a><a class="btn btn-ghost btn-block" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost btn-block" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a><p class="addr">{ADDR}</p></div></div>'''
 
 def footer(p):
     home=p or './'
@@ -111,10 +116,10 @@ def footer(p):
 <div class="foot-about"><a class="logo" href="{home}"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a><p>Новые электровелосипеды WENBOX для курьеров. Аренда, аренда с выкупом, без залога. Собственный сервис.</p></div>
 <div><h4>Модели</h4><ul>{ml}</ul></div>
 <div><h4>Разделы</h4><ul><li><a href="{p}catalog/">Каталог</a></li><li><a href="{home}#adv">Преимущества</a></li><li><a href="{home}#service">Сервис</a></li><li><a href="{home}#steps">Как начать</a></li><li><a href="{home}#contacts">Контакты</a></li></ul></div>
-<div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a href="{WA}" target="_blank" rel="noopener">WhatsApp</a></li><li><a href="{TG}" target="_blank" rel="noopener">Telegram</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
+<div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @volte0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
-<div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('chat')}Написать</a></div>
-<script src="{p}assets/main.js?v=5" defer></script></body></html>'''
+<div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}WhatsApp</a></div>
+<script src="{p}assets/main.js?v=6" defer></script></body></html>'''
 
 def media(m,p,cls=''):
     ph=photos(m['slug'])
@@ -161,15 +166,15 @@ def contacts_block():
 <div class="loc-item">{ic('phone')}<div><span>Телефон</span><b><a href="{TEL}">{PHONE}</a></b></div></div>
 <div class="loc-btns"><a class="btn btn-gold btn-block" data-loc="route" href="{POINTS[0]['route']}" target="_blank" rel="noopener">{ic('route')}Построить маршрут в 2ГИС</a>
 <a class="btn btn-ghost btn-block" href="{TEL}">{ic('phone')}Позвонить</a>
-<a class="btn btn-ghost btn-block" href="{WA}" target="_blank" rel="noopener">{ic('chat')}Написать в WhatsApp</a>
-<a class="btn btn-ghost btn-block" href="{TG}" target="_blank" rel="noopener">{ic('send')}Написать в Telegram</a></div></div>
+<a class="btn btn-ghost btn-block" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a>
+<a class="btn btn-ghost btn-block" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div></div>
 <div class="map-wrap rv d1"><div id="map"></div><div class="map-ph">Загружаем карту 2ГИС…</div></div></div></div></section>
 <script>window.VOLT_POINTS={pts};</script>'''
 
 def cta_block(p):
     return f'''<section class="section" style="padding-top:0"><div class="container"><div class="cta rv"><img class="cta-mark" src="{p}img/brand/mark.svg" alt=""><div class="cta-grid">
 <div><span class="eyebrow">Пишите или звоните</span><h2 style="margin-top:14px">Полностью <span class="gold">готовы к работе</span></h2><p class="lead">Новая техника · Без залога · Собственный сервис · Аренда с выкупом</p></div>
-<div><a class="phone-big" href="{TEL}">{PHONE}</a><p style="color:var(--muted);margin-bottom:18px">{ADDR}</p><div class="btns"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('chat')}Написать</a></div></div>
+<div><a class="phone-big" href="{TEL}">{PHONE}</a><p style="color:var(--muted);margin-bottom:18px">{ADDR}</p><div class="btns"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div></div>
 </div></div></div></section>'''
 
 def index():
@@ -264,7 +269,7 @@ def model_page(m):
 <h1>{m['name']}</h1>{desc}<div style="height:12px"></div>
 <div class="spec-table">{spec}</div>
 <div class="tariffs"><div class="tariff hl"><h4>{ic('clock')}Обычная аренда</h4>{rent}</div><div class="tariff"><h4>{ic('key')}Аренда с выкупом</h4>{buy}</div></div>
-<div class="prod-btns"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('chat')}Написать</a></div>
+<div class="prod-btns"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost full" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div>
 <p class="note">Подберём электровелосипед под ваши задачи и при необходимости доставим по удобному адресу.</p></div></div></div></section>
 <section class="section"><div class="container"><div class="section-head rv"><span class="eyebrow">Другие модели</span><h2>Смотрите <span class="gold">также</span></h2></div><div class="models mode-rent" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr))">{others}</div></div></section>
 {cta_block(p)}</main>'''
