@@ -370,3 +370,6 @@ h3{font-size:clamp(18px,2.2vw,22px)}
 .ha-bike{position:relative;z-index:1;width:78%;color:var(--gold);filter:drop-shadow(0 0 24px rgba(201,154,91,.35))}
 .ha-bike svg{width:100%;height:auto}
 .ha-bike svg circle,.ha-bike svg path,.ha-bike svg rect{stroke-width:2.4}
+@media(max-width:1039px){.hero-art{aspect-ratio:1/1}.ha-bike{width:70%;margin-top:-14%}}
+@media(min-width:640px) and (max-width:1039px){.hero-art{aspect-ratio:16/10}.ha-bike{width:50%;margin-top:-6%}}
+.ha-mark{top:50%;transform:translate(-50%,-62%);width:70%;opacity:.05}
