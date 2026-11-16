@@ -461,3 +461,10 @@ h3{font-size:clamp(18px,2.2vw,22px)}
 .hs-dots button{width:8px;height:8px;border-radius:8px;border:0;padding:0;background:rgba(255,255,255,.35);cursor:pointer;transition:width .3s,background .3s}
 .hs-dots button.on{width:22px;background:var(--gold2)}
 @media(max-width:520px){.hs .cap{left:14px;right:14px;bottom:12px}.hs .cap b{font-size:14px}.hs-dots{top:auto;bottom:64px;right:14px}}
+.hero-slider:after{display:none}
+.hs:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,16,0) 50%,rgba(20,18,16,.8) 100%);pointer-events:none;z-index:1}
+.hs.on{z-index:2}
+@media(max-width:1039px){.hero{padding-top:92px}.hero-grid{gap:26px}.hero-media{order:-1}.hero-slider{aspect-ratio:4/3}.hero-media.rv{opacity:1;transform:none}}
+@media(max-width:520px){.hs-dots{bottom:auto;top:14px;right:14px}.chip-2{bottom:56px}}
+.hs-sub{font-style:normal}
+@media(max-width:520px){.hs-sub{display:none}.hs .cap{align-items:center}.chip-2{bottom:52px}}

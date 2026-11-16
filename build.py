@@ -97,7 +97,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=12">
+<link rel="stylesheet" href="{p}assets/style.css?v=14">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
@@ -191,7 +191,7 @@ def hero_slides():
         w=ph[0]; j=w[:-5]+'.jpg'
         sl+=(f'<a class="hs{" on" if k==0 else ""}" href="catalog/{sg}/" aria-label="{m["name"]} — подробнее">'
              f'<picture><source srcset="{w}" type="image/webp"><img src="{j}" alt="{m["name"]}" {"fetchpriority=\"high\"" if k==0 else "loading=\"lazy\""} decoding="async"></picture>'
-             f'<span class="cap"><span><b>{m["name"]}</b>Новые электровелосипеды для курьеров</span><span class="hs-more">Подробнее{ic("arrow")}</span></span></a>')
+             f'<span class="cap"><span><b>{m["name"]}</b><em class="hs-sub">Новые электровелосипеды для курьеров</em></span><span class="hs-more">Подробнее{ic("arrow")}</span></span></a>')
         dots+=f'<button type="button" class="{"on" if k==0 else ""}" aria-label="{m["name"]}"></button>'
     return f'<div class="hero-photo hero-slider" id="hslider">{sl}<div class="hs-dots">{dots}</div></div>'
 
