@@ -97,7 +97,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=11">
+<link rel="stylesheet" href="{p}assets/style.css?v=12">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
@@ -123,7 +123,7 @@ def footer(p):
 <div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @Volt0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
 <div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}WhatsApp</a></div>
-<script src="{p}assets/main.js?v=7" defer></script></body></html>'''
+<script src="{p}assets/main.js?v=8" defer></script></body></html>'''
 
 def media(m,p,cls=''):
     ph=photos(m['slug'])
@@ -181,6 +181,20 @@ def cta_block(p):
 <div><a class="phone-big" href="{TEL}">{PHONE}</a><p style="color:var(--muted);margin-bottom:18px">{ADDR}</p><div class="btns"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div></div>
 </div></div></div></section>'''
 
+def hero_slides():
+    order=['u2-big','u2','r9','u5']
+    ms={m['slug']:m for m in MODELS}
+    sl='';dots=''
+    for k,sg in enumerate(order):
+        m=ms[sg]; ph=photos(sg)
+        if not ph: continue
+        w=ph[0]; j=w[:-5]+'.jpg'
+        sl+=(f'<a class="hs{" on" if k==0 else ""}" href="catalog/{sg}/" aria-label="{m["name"]} — подробнее">'
+             f'<picture><source srcset="{w}" type="image/webp"><img src="{j}" alt="{m["name"]}" {"fetchpriority=\"high\"" if k==0 else "loading=\"lazy\""} decoding="async"></picture>'
+             f'<span class="cap"><span><b>{m["name"]}</b>Новые электровелосипеды для курьеров</span><span class="hs-more">Подробнее{ic("arrow")}</span></span></a>')
+        dots+=f'<button type="button" class="{"on" if k==0 else ""}" aria-label="{m["name"]}"></button>'
+    return f'<div class="hero-photo hero-slider" id="hslider">{sl}<div class="hs-dots">{dots}</div></div>'
+
 def index():
     p=''
     advh=''.join(f'<div class="adv rv d{i%4}{" big" if i==0 else ""}"><span class="num">0{i+1}</span><div class="ic">{ic(a)}</div><h3>{t}</h3><p>{d}</p></div>' for i,(a,t,d) in enumerate(ADV))
@@ -195,8 +209,7 @@ def index():
 <p class="lead rv d2">WENBOX в аренду и с выкупом. Все электровелосипеды новые, полностью подготовлены к работе и подходят для ежедневной работы курьером.</p>
 <div class="hero-btns rv d3"><a class="btn btn-gold" href="catalog/">Выбрать модель{ic('arrow')}</a><a class="btn btn-ghost" href="{TEL}">{ic('phone')}{PHONE}</a></div>
 <div class="hero-stats rv d3"><div><b>от 4 000 ₽</b><span>аренда в неделю</span></div><div><b>0 ₽</b><span>залог</span></div><div><b>до 70 км/ч</b><span>скорость U2 / U2 PRO</span></div></div></div>
-<div class="hero-media rv d2"><div class="hero-photo hero-art"><div class="ha-rings"><i></i><i></i><i></i></div><img class="ha-mark" src="img/brand/mark.svg" alt="" aria-hidden="true"><div class="ha-bike">{BIKE_SVG}</div>
-<div class="cap"><div><b>WENBOX U2 · U2 BIG · U5 · R9</b>Новые электровелосипеды для курьеров</div></div></div>
+<div class="hero-media rv d2">{hero_slides()}
 <div class="float-chip chip-1">{ic('shield')}<div><b>Без залога</b><span>новая техника</span></div></div>
 <div class="float-chip chip-2">{ic('wrench')}<div><b>Свой сервис</b><span>подменный — бесплатно</span></div></div></div>
 </div></section>
