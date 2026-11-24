@@ -3,6 +3,7 @@
 Фото моделей: положите файлы в img/models/<slug>/ (jpg/webp), имена сортируются по алфавиту,
 первое фото становится обложкой карточки. Затем запустите: python3 build.py"""
 import os, json, glob, html
+from urllib.parse import quote
 ROOT=os.path.dirname(os.path.abspath(__file__))
 PHONE='+7-913-943-88-14'; TEL='tel:+79139438814'; WA='https://wa.me/79139438814'; TG='https://t.me/Volt0ne'
 ADDR='г. Новосибирск, ул. Пролетарская, 50'
@@ -97,7 +98,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=14">
+<link rel="stylesheet" href="{p}assets/style.css?v=17">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
@@ -119,11 +120,11 @@ def footer(p):
     return f'''<footer class="footer"><div class="container"><div class="foot-grid">
 <div class="foot-about"><a class="logo" href="{home}"><img src="{p}img/brand/mark.svg" alt="VOLT ONE" width="78" height="34"><span class="logo-txt"><b>VOLT ONE</b><small>Аренда · Продажа · Запчасти</small></span></a><p>Новые электровелосипеды WENBOX для курьеров. Аренда, аренда с выкупом, без залога. Собственный сервис.</p></div>
 <div><h4>Модели</h4><ul>{ml}</ul></div>
-<div><h4>Разделы</h4><ul><li><a href="{p}catalog/">Каталог</a></li><li><a href="{p}parts/">Запчасти и тюнинг</a></li><li><a href="{home}#adv">Преимущества</a></li><li><a href="{home}#service">Сервис</a></li><li><a href="{home}#steps">Как начать</a></li><li><a href="{home}#contacts">Контакты</a></li></ul></div>
+<div><h4>Разделы</h4><ul><li><a href="{p}catalog/">Каталог</a></li><li><a href="{p}parts/">Запчасти и тюнинг</a></li><li><a href="{p}parts/#acc">Аксессуары</a></li><li><a href="{home}#adv">Преимущества</a></li><li><a href="{home}#service">Сервис</a></li><li><a href="{home}#steps">Как начать</a></li><li><a href="{home}#contacts">Контакты</a></li></ul></div>
 <div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @Volt0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
 <div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}WhatsApp</a></div>
-<script src="{p}assets/main.js?v=8" defer></script></body></html>'''
+<script src="{p}assets/main.js?v=10" defer></script></body></html>'''
 
 def media(m,p,cls=''):
     ph=photos(m['slug'])
@@ -270,7 +271,64 @@ def parts_teaser(p):
     return f'''<section class="section" id="parts" style="padding-top:0"><div class="container"><div class="section-head row rv"><div style="display:flex;flex-direction:column;gap:16px"><span class="eyebrow">Запчасти и тюнинг</span><h2>Запчасти <span class="gold">и тюнинг</span></h2><p class="lead">Подберём под ваш электровелосипед — любую модель. Цена по запросу.</p></div><a class="btn btn-ghost" href="{p}parts/">Все категории{ic('arrow')}</a></div>
 <div class="parts-grid compact">{parts_cards(False)}</div></div></section>'''
 
-PCATS=[('all','Все'),('light','Свет и оптика'),('wheels','Колёса и покрышки'),('guard','Крылья и защита'),('pegs','Подножки'),('bars','Рули и ручки'),('susp','Подвеска и тормоза'),('helmet','Шлемы'),('tune','Тюнинг')]
+def msg_links(text):
+    q=quote(text)
+    return f'{WA}?text={q}', f'{TG}?text={q}'
+
+def tile_bg(jpg):
+    from PIL import Image as _I
+    _im=_I.open(jpg).convert('RGB'); _w,_h=_im.size; _r=_w/_h
+    _e=_im.resize((32,32)); _px=[_e.getpixel((x,y)) for x in range(32) for y in (0,31)]+[_e.getpixel((x,y)) for y in range(32) for x in (0,31)]
+    _bg='#%02x%02x%02x'%tuple(sum(q[k] for q in _px)//len(_px) for k in range(3))
+    _fit=' fit' if (_r>1.35 or _r<0.75) else ''
+    return _bg,_fit
+
+ACC=[
+ dict(slug='mufty-blue', name='Муфты на руль зимние, синий мех',
+   crumb='Муфты', variant_label='Синий мех, красная окантовка',
+   cats='acc muffs', price=800, price_note='за пару',
+   cover='img/parts/muffs/blue-01',
+   photos=['img/parts/muffs/blue-%02d'%i for i in range(1,6)],
+   desc=[
+    'Зимние муфты на руль — пара тёплых чехлов для рук. Подходят для велосипеда, мотоцикла, квадроцикла и снегохода.',
+    'Верх сшит из плотного чёрного нейлона, внизу — манжета с фактурой под карбон, по краю красный светоотражающий кант. Внутри мягкий синий искусственный мех (флис), руки остаются в тепле на ветру и в мороз.',
+    'Муфты надеваются на грипсы руля, размер универсальный. В комплекте 1 пара (левая и правая).'],
+   order='Здравствуйте! Хочу заказать муфты на руль (синий мех, красная окантовка), 800 ₽ за пару.',
+   variants=[('mufty-blue','Синий мех, красная окантовка'),('mufty-grey','Серый мех')]),
+ dict(slug='mufty-grey', name='Муфты на руль зимние, серый мех',
+   crumb='Муфты', variant_label='Серый мех',
+   cats='acc muffs', price=800, price_note='за пару',
+   cover='img/parts/muffs/grey-01',
+   photos=['img/parts/muffs/grey-01'],
+   desc=[
+    'Зимние муфты на руль — пара тёплых чехлов для рук. Подходят для велосипеда, мотоцикла, квадроцикла и снегохода.',
+    'Верх сшит из плотного чёрного нейлона, внизу — манжета с фактурой под карбон, по краю светоотражающая полоса. Внутри мягкий серый искусственный мех (флис), руки остаются в тепле на ветру и в мороз.',
+    'Муфты надеваются на грипсы руля, размер универсальный. В комплекте 1 пара (левая и правая).'],
+   order='Здравствуйте! Хочу заказать муфты на руль (серый мех), 800 ₽ за пару.',
+   variants=[('mufty-blue','Синий мех, красная окантовка'),('mufty-grey','Серый мех')]),
+ dict(slug='podnozhki', name='Подножки алюминиевые',
+   crumb='Подножки алюминиевые',
+   subtitle='для электровелосипеда U2 / U2 Pro / U7 / U5',
+   cats='acc pegs-alu pegs', price=7150, price_note='комплект',
+   cover='img/parts/podnozhki/01',
+   photos=['img/parts/podnozhki/%02d'%i for i in range(1,7)],
+   video='img/parts/podnozhki/video.mp4',
+   poster='img/parts/podnozhki/poster',
+   desc=[
+    'Подножки для электровелосипеда — комплект из двух регулируемых складных подножек для пассажира или водителя. Совместимы с моделями U2, U2 Pro, U7 и U5.',
+    'Особенности:',
+    '• Прочный алюминиевый сплав — подножки лёгкие, но выдерживают высокую нагрузку.',
+    '• Регулировка угла и высоты — можно подобрать удобное положение ног.',
+    '• Расширенная площадь для ног — нога стоит устойчиво, меньше устаёт в поездке.',
+    '• Складная конструкция — подножки складываются, когда не нужны.',
+    '• Надёжная опора и эргономичный дизайн, рифлёная поверхность площадки.',
+    '• Цвет — чёрный, стильный и функциональный тюнинг электровелосипеда.'],
+   kit=['подножка — 2 шт.','кронштейн (рычаг) — 2 шт.','удлинительная пластина — 2 шт.','монтажные пластины','болты, гайки, шайбы для установки','фирменная коробка'],
+   order='Здравствуйте! Хочу заказать подножки алюминиевые для электровелосипеда U2 / U2 Pro / U7 / U5, 7150 ₽.'),
+]
+
+PCATS=[('all','Все',None),('acc','Аксессуары',None),('muffs','Муфты','acc'),('pegs-alu','Подножки алюминиевые','acc'),
+('light','Свет и оптика',None),('wheels','Колёса и покрышки',None),('guard','Крылья и защита',None),('pegs','Подножки',None),('bars','Рули и ручки',None),('susp','Подвеска и тормоза',None),('helmet','Шлемы',None),('tune','Тюнинг',None)]
 PITEMS=[('headlight-visor','Светодиодная фара с козырьком','light tune'),
 ('headlight-3lens','Фара с LED-кольцом и тремя линзами','light tune'),
 ('headlight-halo','Фара с ангельским кольцом','light'),
@@ -280,8 +338,6 @@ PITEMS=[('headlight-visor','Светодиодная фара с козырьк�
 ('windscreen','Ветровое стекло','guard'),
 ('tyre-offroad','Покрышка 12″ внедорожная','wheels'),
 ('tyre-winter','Покрышка зимняя','wheels'),
-('footpeg-alu-red','Алюминиевые подножки','pegs tune'),
-('footpeg-alu-black','Подножки чёрные, пара','pegs'),
 ('footboard','Накладки на подножки','pegs tune'),
 ('grips-silicone','Ручки руля','bars'),
 ('levers-grips-kit','Рычаги и грипсы','bars tune'),
@@ -290,34 +346,102 @@ PITEMS=[('headlight-visor','Светодиодная фара с козырьк�
 ('swingarm-kit','Маятник с амортизаторами и тормозом','susp tune'),
 ('helmet-modular','Шлем-модуляр','helmet')]
 
+def acc_gallery(item,p):
+    ph=item['photos']; alt=html.escape(item['name'])
+    imgs=[p+x+'.webp' for x in ph]
+    first_w,first_j=imgs[0],p+ph[0]+'.jpg'
+    nav=(f'<button class="gal-nav gal-prev" data-gal="-1" aria-label="Предыдущее фото">{ic("left")}</button><button class="gal-nav gal-next" data-gal="1" aria-label="Следующее фото">{ic("right")}</button><span class="gal-count">1 / {len(ph)}</span>' if len(ph)>1 else '')
+    gal=f'<div class="gallery-main sq" data-imgs=\'{json.dumps(imgs)}\'><picture><source srcset="{first_w}" type="image/webp"><img src="{first_j}" alt="{alt} — фото"></picture>{nav}</div>'
+    if len(ph)>1:
+        gal+='<div class="thumbs">'+''.join(f'<button class="{"on" if k==0 else ""}" aria-label="Фото {k+1}"><img src="{u}" alt="" loading="lazy"></button>' for k,u in enumerate(imgs))+'</div>'
+    lb_prev=f'<button class="gal-nav gal-prev" data-gal="-1" aria-label="Назад">{ic("left")}</button>' if len(ph)>1 else ''
+    lb_next=f'<button class="gal-nav gal-next" data-gal="1" aria-label="Вперёд">{ic("right")}</button>' if len(ph)>1 else ''
+    gal+=f'<div class="lb"><button class="lb-close" aria-label="Закрыть">{ic("x")}</button>{lb_prev}<img src="" alt="{alt}">{lb_next}</div>'
+    if item.get('video'):
+        poster_j=p+item['poster']+'.jpg'
+        gal+=f'<div class="prod-video"><video controls playsinline preload="metadata" poster="{poster_j}" title="{alt} — видео"><source src="{p}{item["video"]}" type="video/mp4"></video></div>'
+    return gal
+
+def acc_page(item):
+    p='../../'
+    wa,tg=msg_links(item['order'])
+    gal=acc_gallery(item,p)
+    var=''
+    if item.get('variants'):
+        pills=''.join(
+            f'<a class="var-pill{" on" if slug==item["slug"] else ""}" href="{"#" if slug==item["slug"] else "../"+slug+"/"}">{html.escape(label)}</a>'
+            for slug,label in item['variants'])
+        var=f'<div class="var-label">Вариант</div><div class="var-pills">{pills}</div>'
+    desc=''.join(f'<p>{html.escape(x)}</p>' for x in item['desc'])
+    kit=''
+    if item.get('kit'):
+        kit='<h3 class="prod-kit-title">Комплектация</h3><ul class="prod-kit">'+''.join(f'<li>{html.escape(x)}</li>' for x in item['kit'])+'</ul>'
+    sub=f'<p class="prod-sub">{html.escape(item["subtitle"])}</p>' if item.get('subtitle') else ''
+    price=fmt(item['price'])
+    note=f'<small>{html.escape(item["price_note"])}</small>' if item.get('price_note') else ''
+    og=item['cover']+'.jpg'
+    title=f'{item["name"]} — {fmt(item["price"])} | VOLT ONE'
+    meta=' '.join(item['desc'][:2])
+    s=head(title,meta,p,f'parts/{item["slug"]}/',og)
+    s+=header(p,'parts',True)
+    s+=f'<main><section class="phero" style="padding-bottom:0"><div class="container"><div class="crumbs"><a href="{p}">Главная</a><i>/</i><a href="{p}parts/">Запчасти и тюнинг</a><i>/</i><a href="{p}parts/#acc">Аксессуары</a><i>/</i><span>{html.escape(item["crumb"])}</span></div>\n'
+    s+=f'<div class="prod"><div class="rv">{gal}</div>\n'
+    s+=f'<div class="prod-info rv d1">\n<h1>{html.escape(item["name"])}</h1>{sub}{var}\n'
+    s+=f'<div class="prod-price"><b>{price}</b>{note}</div>\n'
+    s+=f'<div class="prod-desc">{desc}{kit}</div>\n'
+    s+=f'<div class="prod-btns"><a class="btn btn-gold" href="{TEL}">{ic("phone")}Позвонить</a><a class="btn btn-ghost" href="{wa}" target="_blank" rel="noopener">{ic("wa")}Написать в WhatsApp</a><a class="btn btn-ghost full" href="{tg}" target="_blank" rel="noopener">{ic("tg")}Написать в Telegram</a></div>\n'
+    s+='<p class="note">Напишите, какой вариант нужен — подберём и привезём под заказ.</p></div></div></div></section>\n'
+    s+=cta_block(p)+'</main>'
+    s+=footer(p)
+    return s
+
+def acc_tile(item,p):
+    jpg=os.path.join(ROOT,item['cover']+'.jpg')
+    _bg,_fit=tile_bg(jpg)
+    wa,_=msg_links(item['order'])
+    href=f'{p}parts/{item["slug"]}/'
+    price=fmt(item['price'])+(f' {item["price_note"]}' if item.get('price_note') else '')
+    name=html.escape(item['name'])
+    return (f'<article class="ptile" data-cats="{item["cats"]}"><a class="ptile-img{_fit}" style="background:{_bg}" href="{href}" aria-label="{name}">'
+            f'<picture><source srcset="{p}{item["cover"]}.webp" type="image/webp"><img src="{p}{item["cover"]}.jpg" alt="{name}" loading="lazy" decoding="async"></picture><span class="ptile-zoom">{ic("arrow")}</span></a>'
+            f'<div class="ptile-body"><h3>{name}</h3><span class="ptile-price">{price}</span>'
+            f'<div class="ptile-btns"><a class="btn btn-gold btn-sm" href="{href}">Подробнее</a>'
+            f'<a class="btn btn-ghost btn-sm" href="{wa}" target="_blank" rel="noopener">{ic("wa")}WhatsApp</a></div></div></article>')
+
 def parts_page():
     p='../'
-    s=head('Запчасти и тюнинг для электровелосипедов — VOLT ONE','Запчасти и тюнинг для электровелосипедов любых моделей: свет и оптика, колёса и покрышки, крылья и защита, подножки, рули и ручки, подвеска и тормоза, шлемы. Цена по запросу. Новосибирск.',p,'parts/')
+    s=head('Запчасти и тюнинг для электровелосипедов — VOLT ONE','Запчасти, тюнинг и аксессуары для электровелосипедов любых моделей: зимние муфты, алюминиевые подножки, свет и оптика, колёса и покрышки, крылья и защита, рули и ручки, подвеска и тормоза, шлемы. Новосибирск.',p,'parts/')
     s+=header(p,'parts',True)
-    cnt={k:0 for k,_ in PCATS}
-    for _,_,c in PITEMS:
+    items=[(a['cats']) for a in ACC]+[c for _,_,c in PITEMS]
+    cnt={k:0 for k,_,_ in PCATS}
+    for c in items:
         cnt['all']+=1
-        for x in c.split(): cnt[x]+=1
-    side=''.join(f'<button type="button" class="pcat{" on" if k=="all" else ""}" data-cat="{k}"><span>{t}</span><i>{cnt[k]}</i></button>' for k,t in PCATS if cnt[k])
-    tiles=''
+        for x in c.split():
+            if x in cnt: cnt[x]+=1
+    side=''; last_parent=False
+    for k,title,parent in PCATS:
+        if not cnt[k]: continue
+        if parent and not last_parent: side+='<div class="pcat-subs">'
+        if last_parent and not parent: side+='</div>'
+        cls='pcat'+(' pcat-sub' if parent else '')+(' on' if k=='all' else '')
+        side+=f'<button type="button" class="{cls}" data-cat="{k}"'+ (f' data-parent="{parent}"' if parent else '') +f'><span>{title}</span><i>{cnt[k]}</i></button>'
+        last_parent=bool(parent)
+    if last_parent: side+='</div>'
+    tiles=''.join(acc_tile(a,p) for a in ACC)
     for i,(slug,name,c) in enumerate(PITEMS):
-        from PIL import Image as _I
-        _im=_I.open(f'img/parts/{slug}.jpg').convert('RGB'); _w,_h=_im.size; _r=_w/_h
-        _e=_im.resize((32,32)); _px=[_e.getpixel((x,y)) for x in range(32) for y in (0,31)]+[_e.getpixel((x,y)) for y in range(32) for x in (0,31)]
-        _bg='#%02x%02x%02x'%tuple(sum(q[k] for q in _px)//len(_px) for k in range(3))
-        _fit=' fit' if (_r>1.35 or _r<0.75) else ''
+        _bg,_fit=tile_bg(f'img/parts/{slug}.jpg')
         tiles+=(f'<article class="ptile" data-cats="{c}"><button type="button" class="ptile-img{_fit}" style="background:{_bg}" data-full="{p}img/parts/{slug}.jpg" aria-label="Увеличить фото: {name}">'
                 f'<picture><source srcset="{p}img/parts/{slug}.webp" type="image/webp"><img src="{p}img/parts/{slug}.jpg" alt="{name}" loading="lazy" decoding="async"></picture><span class="ptile-zoom">{ic("arrow")}</span></button>'
                 f'<div class="ptile-body"><h3>{name}</h3><span class="ptile-price">Цена по запросу</span>'
                 f'<a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic("wa")}Написать</a></div></article>')
-    s+=f'''<main><section class="phero"><div class="container"><div class="crumbs"><a href="../">Главная</a><i>/</i><span>Запчасти и тюнинг</span></div>
-<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти и тюнинг под ваш электровелосипед — любую модель. Цена по запросу — напишите, что нужно.</p>
-<div class="hero-btns" style="margin-top:8px"><a class="btn btn-gold" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram</a></div></div></div></section>
-<section class="section" style="padding-top:30px"><div class="container"><div class="pshop">
-<aside class="pside"><h4>Категории</h4><div class="pcats" role="tablist">{side}</div><div class="pside-note">Не нашли нужное? Напишите — подберём и привезём под заказ.<a class="btn btn-ghost btn-sm" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Telegram</a></div></aside>
-<div class="pgrid" id="pgrid">{tiles}</div></div></div></section>
-{cta_block(p)}</main>
-<div class="lb" id="plb"><button class="lb-close" aria-label="Закрыть">{ic("x")}</button><button class="gal-nav gal-prev" data-plb="-1" aria-label="Назад">{ic("left")}</button><img src="" alt=""><button class="gal-nav gal-next" data-plb="1" aria-label="Вперёд">{ic("right")}</button></div>'''
+    s+=f'<main><section class="phero"><div class="container"><div class="crumbs"><a href="../">Главная</a><i>/</i><span>Запчасти и тюнинг</span></div>\n'
+    s+=f'<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти, тюнинг и аксессуары под ваш электровелосипед — любую модель. В разделе «Аксессуары» — зимние муфты на руль и алюминиевые подножки. Цену на остальные позиции уточняйте — напишите, что нужно.</p>\n'
+    s+=f'<div class="hero-btns" style="margin-top:8px"><a class="btn btn-gold" href="{WA}" target="_blank" rel="noopener">{ic("wa")}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic("tg")}Написать в Telegram</a></div></div></div></section>\n'
+    s+=f'<section class="section" style="padding-top:30px"><div class="container"><div class="pshop" id="pshop">\n'
+    s+=f'<aside class="pside"><h4>Категории</h4><div class="pcats" role="tablist">{side}</div><div class="pside-note">Не нашли нужное? Напишите — подберём и привезём под заказ.<a class="btn btn-ghost btn-sm" href="{TG}" target="_blank" rel="noopener">{ic("tg")}Telegram</a></div></aside>\n'
+    s+=f'<div class="pgrid" id="pgrid">{tiles}</div></div></div></section>\n'
+    s+=cta_block(p)+'</main>\n'
+    s+=f'<div class="lb" id="plb"><button class="lb-close" aria-label="Закрыть">{ic("x")}</button><button class="gal-nav gal-prev" data-plb="-1" aria-label="Назад">{ic("left")}</button><img src="" alt=""><button class="gal-nav gal-next" data-plb="1" aria-label="Вперёд">{ic("right")}</button></div>'
     s+=footer(p)
     return s
 
@@ -370,6 +494,7 @@ def model_page(m):
 def w(path,txt):
     path=os.path.join(ROOT,path); os.makedirs(os.path.dirname(path),exist_ok=True); open(path,'w').write(txt)
 w('index.html',index()); w('catalog/index.html',catalog()); w('parts/index.html',parts_page())
+for a in ACC: w(f'parts/{a["slug"]}/index.html',acc_page(a))
 for m in MODELS: w(f'catalog/{m["slug"]}/index.html',model_page(m))
 w('404.html',head('Страница не найдена — VOLT ONE','',SITE_URL,'')+f'<main><section class="phero"><div class="container"><h1>Страница <span class="gold">не найдена</span></h1><p class="lead" style="margin:20px 0 30px">Перейдите на главную или в каталог.</p><a class="btn btn-gold" href="{SITE_URL}">На главную</a></div></section></main></body></html>')
 print('built', {m['slug']:len(photos(m['slug'])) for m in MODELS})
