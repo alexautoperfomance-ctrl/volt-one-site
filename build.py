@@ -98,7 +98,7 @@ def head(title,desc,p,canon,og_img='img/og.jpg'):
 <link rel="apple-touch-icon" href="{p}img/brand/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;600;700&display=swap&subset=cyrillic" rel="stylesheet">
-<link rel="stylesheet" href="{p}assets/style.css?v=17">
+<link rel="stylesheet" href="{p}assets/style.css?v=19">
 <script type="application/ld+json">{json.dumps({"@context":"https://schema.org","@type":"LocalBusiness","name":"VOLT ONE","description":"Аренда, аренда с выкупом и продажа электровелосипедов для курьеров","telephone":"+79139438814","address":{"@type":"PostalAddress","streetAddress":"ул. Пролетарская, 50","addressLocality":"Новосибирск","addressCountry":"RU"},"geo":{"@type":"GeoCoordinates","latitude":POINTS[0]['lat'],"longitude":POINTS[0]['lon']}},ensure_ascii=False)}</script>
 </head><body><div class="noise"></div>'''
 
@@ -124,7 +124,7 @@ def footer(p):
 <div><h4>Контакты</h4><ul><li><a href="{TEL}">{PHONE}</a></li><li><a class="foot-ic" href="{WA}" target="_blank" rel="noopener">{ic('wa')}Написать в WhatsApp</a></li><li><a class="foot-ic" href="{TG}" target="_blank" rel="noopener">{ic('tg')}Написать в Telegram · @Volt0ne</a></li><li style="color:var(--muted)">{ADDR}</li></ul></div>
 </div><div class="foot-bottom"><span>© 2026 VOLT ONE. Аренда · Продажа · Запчасти</span><span>Новая техника · Без залога · Собственный сервис · Аренда с выкупом</span></div></div></footer>
 <div class="mbar"><a class="btn btn-gold" href="{TEL}">{ic('phone')}Позвонить</a><a class="btn btn-ghost" href="{WA}" target="_blank" rel="noopener">{ic('wa')}WhatsApp</a></div>
-<script src="{p}assets/main.js?v=10" defer></script></body></html>'''
+<script src="{p}assets/main.js?v=12" defer></script></body></html>'''
 
 def media(m,p,cls=''):
     ph=photos(m['slug'])
@@ -288,7 +288,7 @@ ACC=[
    crumb='Муфты', variant_label='Синий мех, красная окантовка',
    cats='acc muffs', price=800, price_note='за пару',
    cover='img/parts/muffs/blue-01',
-   photos=['img/parts/muffs/blue-%02d'%i for i in range(1,6)],
+   photos=['img/parts/muffs/blue-01','img/parts/muffs/snow-front','img/parts/muffs/snow-lining']+['img/parts/muffs/blue-%02d'%i for i in range(2,6)],
    desc=[
     'Зимние муфты на руль — пара тёплых чехлов для рук. Подходят для велосипеда, мотоцикла, квадроцикла и снегохода.',
     'Верх сшит из плотного чёрного нейлона, внизу — манжета с фактурой под карбон, по краю красный светоотражающий кант. Внутри мягкий синий искусственный мех (флис), руки остаются в тепле на ветру и в мороз.',
@@ -348,19 +348,31 @@ PITEMS=[('headlight-visor','Светодиодная фара с козырьк�
 
 def acc_gallery(item,p):
     ph=item['photos']; alt=html.escape(item['name'])
-    imgs=[p+x+'.webp' for x in ph]
-    first_w,first_j=imgs[0],p+ph[0]+'.jpg'
-    nav=(f'<button class="gal-nav gal-prev" data-gal="-1" aria-label="Предыдущее фото">{ic("left")}</button><button class="gal-nav gal-next" data-gal="1" aria-label="Следующее фото">{ic("right")}</button><span class="gal-count">1 / {len(ph)}</span>' if len(ph)>1 else '')
-    gal=f'<div class="gallery-main sq" data-imgs=\'{json.dumps(imgs)}\'><picture><source srcset="{first_w}" type="image/webp"><img src="{first_j}" alt="{alt} — фото"></picture>{nav}</div>'
-    if len(ph)>1:
-        gal+='<div class="thumbs">'+''.join(f'<button class="{"on" if k==0 else ""}" aria-label="Фото {k+1}"><img src="{u}" alt="" loading="lazy"></button>' for k,u in enumerate(imgs))+'</div>'
-    lb_prev=f'<button class="gal-nav gal-prev" data-gal="-1" aria-label="Назад">{ic("left")}</button>' if len(ph)>1 else ''
-    lb_next=f'<button class="gal-nav gal-next" data-gal="1" aria-label="Вперёд">{ic("right")}</button>' if len(ph)>1 else ''
-    gal+=f'<div class="lb"><button class="lb-close" aria-label="Закрыть">{ic("x")}</button>{lb_prev}<img src="" alt="{alt}">{lb_next}</div>'
+    slides=[]; thumbs=[]
+    for k,x in enumerate(ph):
+        w,j=p+x+'.webp',p+x+'.jpg'
+        slides.append(f'<figure class="gallery-slide"><picture><source srcset="{w}" type="image/webp"><img src="{j}" alt="{alt} — фото {k+1}" draggable="false"></picture></figure>')
+        thumbs.append(f'<button type="button" class="{"on" if k==0 else ""}" data-gto="{k}" aria-label="Фото {k+1}"><img src="{w}" alt="" loading="lazy" draggable="false"></button>')
     if item.get('video'):
+        k=len(ph)
         poster_j=p+item['poster']+'.jpg'
-        gal+=f'<div class="prod-video"><video controls playsinline preload="metadata" poster="{poster_j}" title="{alt} — видео"><source src="{p}{item["video"]}" type="video/mp4"></video></div>'
-    return gal
+        poster_w=p+item['poster']+'.webp'
+        slides.append(f'<figure class="gallery-slide is-video"><video controls playsinline preload="metadata" poster="{poster_j}" title="{alt} — видео"><source src="{p}{item["video"]}" type="video/mp4"></video></figure>')
+        thumbs.append(f'<button type="button" class="is-video" data-gto="{k}" aria-label="Видео"><img src="{poster_w}" alt="" loading="lazy" draggable="false"></button>')
+    n=len(slides)
+    nav=''
+    if n>1:
+        dots=''.join(f'<button type="button" class="gal-dot{" on" if k==0 else ""}" data-gto="{k}" aria-label="Слайд {k+1}"></button>' for k in range(n))
+        nav=(f'<button type="button" class="gal-nav gal-prev" data-gal="-1" aria-label="Предыдущее фото">{ic("left")}</button>'
+             f'<button type="button" class="gal-nav gal-next" data-gal="1" aria-label="Следующее фото">{ic("right")}</button>'
+             f'<span class="gal-count">1 / {n}</span><div class="gal-dots">{dots}</div>')
+    thumbs_h=f'<div class="thumbs">{"".join(thumbs)}</div>' if n>1 else ''
+    lb_nav=''
+    if len(ph)>1:
+        lb_nav=(f'<button type="button" class="gal-nav gal-prev" data-gal="-1" aria-label="Назад">{ic("left")}</button>'
+                f'<button type="button" class="gal-nav gal-next" data-gal="1" aria-label="Вперёд">{ic("right")}</button>')
+    return (f'<div class="gallery" data-gallery><div class="gallery-viewport sq"><div class="gallery-track">{"".join(slides)}</div>{nav}</div>'
+            f'{thumbs_h}<div class="lb"><button type="button" class="lb-close" aria-label="Закрыть">{ic("x")}</button>{lb_nav}<img src="" alt="{alt}"></div></div>')
 
 def acc_page(item):
     p='../../'
