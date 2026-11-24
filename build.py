@@ -7,7 +7,7 @@ from urllib.parse import quote
 ROOT=os.path.dirname(os.path.abspath(__file__))
 PHONE='+7-913-943-88-14'; TEL='tel:+79139438814'; WA='https://wa.me/79139438814'; TG='https://t.me/Volt0ne'
 ADDR='г. Новосибирск, ул. Пролетарская, 50'
-SITE_URL='https://alexautoperfomance-ctrl.github.io/volt-one-site/'
+SITE_URL='https://voltone.store/'
 POINTS=[{"name":"Пролетарская, 50","addr":ADDR,"lat":55.0248099,"lon":82.9562136,
   "route":"https://2gis.ru/novosibirsk/directions/points/%7C82.956214%2C55.02481",
   "open":"https://2gis.ru/novosibirsk/geo/82.956214%2C55.02481"}]
