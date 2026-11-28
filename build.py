@@ -325,9 +325,41 @@ ACC=[
     '• Цвет — чёрный, стильный и функциональный тюнинг электровелосипеда.'],
    kit=['подножка — 2 шт.','кронштейн (рычаг) — 2 шт.','удлинительная пластина — 2 шт.','монтажные пластины','болты, гайки, шайбы для установки','фирменная коробка'],
    order='Здравствуйте! Хочу заказать подножки алюминиевые для электровелосипеда U2 / U2 Pro / U7 / U5, 7150 ₽.'),
+ dict(slug='tumanki', name='Туманки светодиодные универсальные',
+   crumb='Туманки',
+   section=('light','Свет и оптика'),
+   cats='light', price=1000, price_note='за пару',
+   cover='img/parts/tumanki/01',
+   photos=['img/parts/tumanki/%02d'%i for i in range(1,5)],
+   desc=[
+    'Светодиодные туманки — пара. Универсальные: крепятся на раму, дуги, руль — куда угодно. Крепление в комплекте.',
+    'Два цвета — жёлтый и белый, два режима света. Яркий свет: хорошо видно дорогу в туман, дождь и в темноте.',
+    'Прочный алюминиевый корпус с рёбрами охлаждения, провод с разъёмом. Подходят для электровелосипедов WENBOX и других моделей. В комплекте 1 пара.'],
+   order='Здравствуйте! Хочу заказать туманки светодиодные универсальные, 1000 ₽ за пару.'),
+ dict(slug='sumka-akb', name='Сумка защитная противопожарная для аккумулятора',
+   crumb='Сумка защитная',
+   cats='acc', price=2500,
+   cover='img/parts/sumka/01',
+   photos=['img/parts/sumka/01','img/parts/sumka/02'],
+   desc=[
+    'Защитная противопожарная и противовзрывная сумка для литиевых аккумуляторов. Огнестойкая (до 1200 °C), подходит для Li-ion, LiFePO4 и NMC.',
+    'В ней можно безопасно хранить и заряжать аккумулятор электровелосипеда. Клапан закрывается на застёжку-фастекс, есть регулируемый плечевой ремень.',
+    'Есть разные размеры — уточняйте под ваш аккумулятор.'],
+   order='Здравствуйте! Хочу заказать сумку защитную противопожарную для аккумулятора, 2500 ₽.'),
+ dict(slug='akb-60v-45ah', name='Аккумулятор 60 В 45 А·ч LiFePO4',
+   crumb='Аккумулятор 60 В 45 А·ч',
+   section=('battery','Аккумуляторы'),
+   cats='battery', price=None,
+   cover='img/parts/akb/01',
+   photos=['img/parts/akb/01','img/parts/akb/02'],
+   desc=[
+    'Аккумулятор 60 В 45 А·ч, железофосфатный (LiFePO4) на цилиндрических элементах. Вес 25 кг. Металлический корпус с ручкой, защищённый разъём, встроенная BMS.',
+    'LiFePO4 безопаснее и служит дольше обычных свинцовых аккумуляторов, лучше работает на морозе.',
+    'Подходит для электровелосипедов 60 В: WENBOX U2 BIG, U5, R9 и других моделей.'],
+   order='Здравствуйте! Хочу заказать аккумулятор 60 В 45 А·ч LiFePO4. Подскажите, пожалуйста, цену.'),
 ]
 
-PCATS=[('all','Все',None),('acc','Аксессуары',None),('muffs','Муфты','acc'),('pegs-alu','Подножки алюминиевые','acc'),
+PCATS=[('all','Все',None),('battery','Аккумуляторы',None),('acc','Аксессуары',None),('muffs','Муфты','acc'),('pegs-alu','Подножки алюминиевые','acc'),
 ('light','Свет и оптика',None),('wheels','Колёса и покрышки',None),('guard','Крылья и защита',None),('pegs','Подножки',None),('bars','Рули и ручки',None),('susp','Подвеска и тормоза',None),('helmet','Шлемы',None),('tune','Тюнинг',None)]
 PITEMS=[('headlight-visor','Светодиодная фара с козырьком','light tune'),
 ('headlight-3lens','Фара с LED-кольцом и тремя линзами','light tune'),
@@ -389,17 +421,22 @@ def acc_page(item):
     if item.get('kit'):
         kit='<h3 class="prod-kit-title">Комплектация</h3><ul class="prod-kit">'+''.join(f'<li>{html.escape(x)}</li>' for x in item['kit'])+'</ul>'
     sub=f'<p class="prod-sub">{html.escape(item["subtitle"])}</p>' if item.get('subtitle') else ''
-    price=fmt(item['price'])
-    note=f'<small>{html.escape(item["price_note"])}</small>' if item.get('price_note') else ''
+    if item.get('price') is None:
+        price_html='<div class="prod-price"><b>Цена по запросу</b></div>\n'
+        title=f'{item["name"]} — цена по запросу | VOLT ONE'
+    else:
+        note=f'<small>{html.escape(item["price_note"])}</small>' if item.get('price_note') else ''
+        price_html=f'<div class="prod-price"><b>{fmt(item["price"])}</b>{note}</div>\n'
+        title=f'{item["name"]} — {fmt(item["price"])} | VOLT ONE'
     og=item['cover']+'.jpg'
-    title=f'{item["name"]} — {fmt(item["price"])} | VOLT ONE'
     meta=' '.join(item['desc'][:2])
+    sec_hash,sec_name=item.get('section',('acc','Аксессуары'))
     s=head(title,meta,p,f'parts/{item["slug"]}/',og)
     s+=header(p,'parts',True)
-    s+=f'<main><section class="phero" style="padding-bottom:0"><div class="container"><div class="crumbs"><a href="{p}">Главная</a><i>/</i><a href="{p}parts/">Запчасти и тюнинг</a><i>/</i><a href="{p}parts/#acc">Аксессуары</a><i>/</i><span>{html.escape(item["crumb"])}</span></div>\n'
+    s+=f'<main><section class="phero" style="padding-bottom:0"><div class="container"><div class="crumbs"><a href="{p}">Главная</a><i>/</i><a href="{p}parts/">Запчасти и тюнинг</a><i>/</i><a href="{p}parts/#{sec_hash}">{html.escape(sec_name)}</a><i>/</i><span>{html.escape(item["crumb"])}</span></div>\n'
     s+=f'<div class="prod"><div class="rv">{gal}</div>\n'
     s+=f'<div class="prod-info rv d1">\n<h1>{html.escape(item["name"])}</h1>{sub}{var}\n'
-    s+=f'<div class="prod-price"><b>{price}</b>{note}</div>\n'
+    s+=price_html
     s+=f'<div class="prod-desc">{desc}{kit}</div>\n'
     s+=f'<div class="prod-btns"><a class="btn btn-gold" href="{TEL}">{ic("phone")}Позвонить</a><a class="btn btn-ghost" href="{wa}" target="_blank" rel="noopener">{ic("wa")}Написать в WhatsApp</a><a class="btn btn-ghost full" href="{tg}" target="_blank" rel="noopener">{ic("tg")}Написать в Telegram</a></div>\n'
     s+='<p class="note">Напишите, какой вариант нужен — подберём и привезём под заказ.</p></div></div></div></section>\n'
@@ -412,7 +449,10 @@ def acc_tile(item,p):
     _bg,_fit=tile_bg(jpg)
     wa,_=msg_links(item['order'])
     href=f'{p}parts/{item["slug"]}/'
-    price=fmt(item['price'])+(f' {item["price_note"]}' if item.get('price_note') else '')
+    if item.get('price') is None:
+        price='Цена по запросу'
+    else:
+        price=fmt(item['price'])+(f' {item["price_note"]}' if item.get('price_note') else '')
     name=html.escape(item['name'])
     return (f'<article class="ptile" data-cats="{item["cats"]}"><a class="ptile-img{_fit}" style="background:{_bg}" href="{href}" aria-label="{name}">'
             f'<picture><source srcset="{p}{item["cover"]}.webp" type="image/webp"><img src="{p}{item["cover"]}.jpg" alt="{name}" loading="lazy" decoding="async"></picture><span class="ptile-zoom">{ic("arrow")}</span></a>'
@@ -422,7 +462,7 @@ def acc_tile(item,p):
 
 def parts_page():
     p='../'
-    s=head('Запчасти и тюнинг для электровелосипедов — VOLT ONE','Запчасти, тюнинг и аксессуары для электровелосипедов любых моделей: зимние муфты, алюминиевые подножки, свет и оптика, колёса и покрышки, крылья и защита, рули и ручки, подвеска и тормоза, шлемы. Новосибирск.',p,'parts/')
+    s=head('Запчасти и тюнинг для электровелосипедов — VOLT ONE','Запчасти, тюнинг и аксессуары для электровелосипедов любых моделей: зимние муфты, алюминиевые подножки, защитная сумка для аккумулятора, аккумулятор LiFePO4 60 В 45 А·ч, светодиодные туманки, свет и оптика, колёса и покрышки, крылья и защита, рули и ручки, подвеска и тормоза, шлемы. Новосибирск.',p,'parts/')
     s+=header(p,'parts',True)
     items=[(a['cats']) for a in ACC]+[c for _,_,c in PITEMS]
     cnt={k:0 for k,_,_ in PCATS}
@@ -447,7 +487,7 @@ def parts_page():
                 f'<div class="ptile-body"><h3>{name}</h3><span class="ptile-price">Цена по запросу</span>'
                 f'<a class="btn btn-gold btn-sm" href="{WA}" target="_blank" rel="noopener">{ic("wa")}Написать</a></div></article>')
     s+=f'<main><section class="phero"><div class="container"><div class="crumbs"><a href="../">Главная</a><i>/</i><span>Запчасти и тюнинг</span></div>\n'
-    s+=f'<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти, тюнинг и аксессуары под ваш электровелосипед — любую модель. В разделе «Аксессуары» — зимние муфты на руль и алюминиевые подножки. Цену на остальные позиции уточняйте — напишите, что нужно.</p>\n'
+    s+=f'<div class="section-head" style="margin-bottom:0"><span class="eyebrow">Запчасти и тюнинг</span><h1 style="font-size:clamp(32px,6vw,60px)">Запчасти <span class="gold">и тюнинг</span></h1><p class="lead">Подберём запчасти, тюнинг и аксессуары под ваш электровелосипед — любую модель. В разделе «Аксессуары» — зимние муфты на руль, алюминиевые подножки и защитная сумка для аккумулятора. В разделе «Свет и оптика» — светодиодные туманки универсальные. В разделе «Аккумуляторы» — LiFePO4 60 В 45 А·ч. Цену на остальные позиции уточняйте — напишите, что нужно.</p>\n'
     s+=f'<div class="hero-btns" style="margin-top:8px"><a class="btn btn-gold" href="{WA}" target="_blank" rel="noopener">{ic("wa")}Написать в WhatsApp</a><a class="btn btn-ghost" href="{TG}" target="_blank" rel="noopener">{ic("tg")}Написать в Telegram</a></div></div></div></section>\n'
     s+=f'<section class="section" style="padding-top:30px"><div class="container"><div class="pshop" id="pshop">\n'
     s+=f'<aside class="pside"><h4>Категории</h4><div class="pcats" role="tablist">{side}</div><div class="pside-note">Не нашли нужное? Напишите — подберём и привезём под заказ.<a class="btn btn-ghost btn-sm" href="{TG}" target="_blank" rel="noopener">{ic("tg")}Telegram</a></div></aside>\n'
