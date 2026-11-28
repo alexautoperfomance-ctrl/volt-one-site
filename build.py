@@ -349,7 +349,7 @@ ACC=[
  dict(slug='akb-60v-45ah', name='Аккумулятор 60 В 45 А·ч LiFePO4',
    crumb='Аккумулятор 60 В 45 А·ч',
    section=('battery','Аккумуляторы'),
-   cats='battery', price=None,
+   cats='battery', price=45000,
    cover='img/parts/akb/01',
    photos=['img/parts/akb/01','img/parts/akb/02'],
    desc=[
